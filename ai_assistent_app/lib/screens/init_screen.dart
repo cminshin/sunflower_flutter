@@ -1,11 +1,20 @@
-import 'package:flutter/foundation.dart';
-import 'package:flutter/widgets.dart';
+import 'package:ai_assistent_app/configs/colors.dart';
+import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 
 class InitScreen extends StatelessWidget {
   const InitScreen({super.key});
 
   @override
   Widget build(BuildContext context) {
-    return const Placeholder();
+    return Scaffold(
+      body: Container(
+        width: Get.width,
+        height: Get.height,
+        color: AppColor.mainColor,
+        alignment: Alignment.center,
+        child: Image.asset('assets/init-cat.png'),
+      ),
+    );
   }
 }

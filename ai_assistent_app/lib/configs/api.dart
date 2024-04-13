@@ -1,13 +1,18 @@
-import 'package:ai_assistent_app/controllers/account_controller.dart';
+import 'dart:convert';
+
 import 'package:dio/dio.dart';
+import 'package:get/get.dart';
 import 'package:logger/logger.dart';
+import 'package:http/http.dart' as http;
 
 var logger = Logger(
   printer: PrettyPrinter(),
 );
 
 class AppAPI {
-  static String baseUrl = 'https://~~~';
+  static String baseUrl = 'localhost:2020';
+  // static String baseUrl = 'https://movie-recommendation.kro.kr';
+  // static String baseUrl = 'https://~~~';
 
   // static getHeader() {
   //   AccountController accountController = Get.find();
@@ -57,6 +62,93 @@ class AppAPI {
     var data = res.data;
     return data;
   }
+
+  static sendGenres() async {
+    Dio dio = DioServices().to();
+    final res = await dio.post('/favoritegenres', data: {
+      'genre1': "sf",
+      'genre2': "romance",
+    });
+    var data = res.data;
+    print(data.toString());
+    return;
+  }
+
+  static sendGenres2() async {
+    // String url = "movie-recommendation.kro.kr:8080";
+    // final res = await http.get(
+    //   Uri.http(url, '/asdf'),
+    // );
+    // final data = json.decode(utf8.decode(res.bodyBytes));
+    // logger.i(data);
+    // return data;
+    print('$baseUrl/favoritegenres');
+    final res = await http.post(
+      Uri.parse('$baseUrl/favoritegenres'),
+      body: {
+        'genre1': "sf",
+        'genre2': "romance",
+      },
+    );
+    // final data = res.body;
+    final data = json.decode(utf8.decode(res.bodyBytes));
+    logger.i(data);
+    return data;
+  }
+
+  static getJang() async {
+    final res = await http.get(Uri.parse('$baseUrl/asdf'));
+    final data = res.body;
+    // final data = json.decode(utf8.decode(res.bodyBytes));
+    logger.i(data);
+    return data;
+  }
+
+  //
+  // {
+  //   genre1:"sf",
+  //   genre2: "romance",
+  // }
+  static sendGenres3(List<String> genres) async {
+    // String url = "movie-recommendation.kro.kr:8080";
+    // final res = await http.get(
+    //   Uri.http(url, '/asdf'),
+    // );
+    // final data = json.decode(utf8.decode(res.bodyBytes));
+    // logger.i(data);
+    // return data;
+    print('$baseUrl/favoritegenres');
+    final res = await http.post(
+      Uri.parse('$baseUrl/favoritegenres'),
+      body: {
+        'genre1': genres[0],
+        'genre2': genres[1],
+        'genre3': genres[2],
+      },
+    );
+    // final data = res.body;
+    final data = json.decode(utf8.decode(res.bodyBytes));
+    logger.i(data);
+    Get.snackbar('send genres return value', data);
+    return data;
+  }
+
+  static sendMovies(List<String> movies) async {
+    print('$baseUrl/favoritemovies');
+    final res = await http.post(
+      Uri.parse('$baseUrl/favoritemovies'),
+      body: {
+        'movie1': movies[0],
+        'movie2': movies[1],
+        'movie3': movies[2],
+      },
+    );
+    // final data = res.body;
+    final data = json.decode(utf8.decode(res.bodyBytes));
+    logger.i(data);
+    Get.snackbar('send movies return value', data);
+    return data;
+  }
 }
 
 class DioServices {
@@ -84,36 +176,36 @@ class DioServices {
 }
 
 class DioInterceptor extends Interceptor {
-  @override
-  void onRequest(RequestOptions options, RequestInterceptorHandler handler) {
-    logger.e("BaseUrl ${options.baseUrl}");
-    logger.e("Path ${options.path}");
-    logger.e("Parameters ${options.queryParameters}");
-    logger.e("Data ${options.data}");
-    logger.e("Connect Timeout ${options.connectTimeout}");
-    logger.e("Send Timeout ${options.sendTimeout}");
-    logger.e("Receive Timeout ${options.receiveTimeout}");
-    super.onRequest(options, handler);
-  }
+  // @override
+  // void onRequest(RequestOptions options, RequestInterceptorHandler handler) {
+  //   logger.e("BaseUrl ${options.baseUrl}");
+  //   logger.e("Path ${options.path}");
+  //   logger.e("Parameters ${options.queryParameters}");
+  //   logger.e("Data ${options.data}");
+  //   logger.e("Connect Timeout ${options.connectTimeout}");
+  //   logger.e("Send Timeout ${options.sendTimeout}");
+  //   logger.e("Receive Timeout ${options.receiveTimeout}");
+  //   super.onRequest(options, handler);
+  // }
 
-  @override
-  void onResponse(Response response, ResponseInterceptorHandler handler) {
-    logger.e(response.statusCode);
-    logger.e(response.data);
-    logger.e("BaseUrl ${response.requestOptions.baseUrl}");
-    logger.e("Path ${response.requestOptions.path}");
-    logger.e("Parameters ${response.requestOptions.queryParameters}");
-    logger.e("Data ${response.requestOptions.data}");
-    logger.e("Connect Timeout ${response.requestOptions.connectTimeout}");
-    logger.e("Send Timeout ${response.requestOptions.sendTimeout}");
-    logger.e("Receive Timeout ${response.requestOptions.receiveTimeout}");
-    super.onResponse(response, handler);
-  }
+  // @override
+  // void onResponse(Response response, ResponseInterceptorHandler handler) {
+  //   logger.e(response.statusCode);
+  //   logger.e(response.data);
+  //   logger.e("BaseUrl ${response.requestOptions.baseUrl}");
+  //   logger.e("Path ${response.requestOptions.path}");
+  //   logger.e("Parameters ${response.requestOptions.queryParameters}");
+  //   logger.e("Data ${response.requestOptions.data}");
+  //   logger.e("Connect Timeout ${response.requestOptions.connectTimeout}");
+  //   logger.e("Send Timeout ${response.requestOptions.sendTimeout}");
+  //   logger.e("Receive Timeout ${response.requestOptions.receiveTimeout}");
+  //   super.onResponse(response, handler);
+  // }
 
-  @override
-  void onError(DioException err, ErrorInterceptorHandler handler) async {
-    logger.e("Error ${err.error}");
-    logger.e("Error Message ${err.message}");
-    super.onError(err, handler);
-  }
+  // @override
+  // void onError(DioException err, ErrorInterceptorHandler handler) async {
+  //   logger.e("Error ${err.error}");
+  //   logger.e("Error Message ${err.message}");
+  //   super.onError(err, handler);
+  // }
 }
