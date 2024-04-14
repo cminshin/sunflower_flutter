@@ -46,7 +46,7 @@ class GenresSelectionScreen extends StatelessWidget {
                   const SizedBox(height: 60),
                   myElevatedButton(() {
                     if (selectionController.selectedGenres.length == 3) {
-                      AppAPI.sendGenres3(selectionController.selectedGenres);
+                      AppAPI.sendGenres(selectionController.selectedGenres);
                       print('genre send');
                       Get.toNamed(Routes.moviesSelection);
                     } else {

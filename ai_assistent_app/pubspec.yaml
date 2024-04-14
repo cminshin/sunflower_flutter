@@ -17,6 +17,7 @@ dependencies:
   get_storage: ^2.1.1
   http: ^1.2.1
   kalender: ^0.3.0
+  loading_animation_widget: ^1.2.1
   logger: ^2.1.0
   vibration: ^1.8.4
 

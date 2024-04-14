@@ -21,6 +21,7 @@ class AppMovies {
         movies.add('assets/images/movies/$fileName');
       }
     });
-  }
 
+    print(movies.toString());
+  }
 }

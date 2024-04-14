@@ -2,6 +2,7 @@ import 'package:ai_assistent_app/configs/api.dart';
 import 'package:ai_assistent_app/configs/colors.dart';
 import 'package:ai_assistent_app/configs/routes.dart';
 import 'package:ai_assistent_app/controllers/selection_controller.dart';
+import 'package:ai_assistent_app/widgets/loading_widget.dart';
 import 'package:ai_assistent_app/widgets/my_background.dart';
 import 'package:ai_assistent_app/widgets/my_elevated_button.dart';
 import 'package:ai_assistent_app/widgets/selection/genres_selection.dart';
@@ -48,7 +49,10 @@ class MoviesSelectionScreen extends StatelessWidget {
                         if (selectionController.selectedMovies.length == 3) {
                           AppAPI.sendMovies(selectionController.selectedMovies);
                           print('movie send');
-                          // Get.toNamed(Routes.selection);
+                          Get.dialog(const LoadingWidget());
+                          Future.delayed(const Duration(seconds: 3), () {
+                            Get.toNamed(Routes.resultScreen);
+                          });
                         } else {
                           // 3개 이하로 선택된 경우, 아무것도 하지 않는다
                         }

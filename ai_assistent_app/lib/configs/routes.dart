@@ -4,7 +4,9 @@ import 'package:ai_assistent_app/screens/login_screen.dart';
 import 'package:ai_assistent_app/screens/main_screen.dart';
 import 'package:ai_assistent_app/screens/genres_selection_screen.dart';
 import 'package:ai_assistent_app/screens/movies_selection_screen.dart';
+import 'package:ai_assistent_app/screens/result_screen.dart';
 import 'package:ai_assistent_app/widgets/selection/genres_selection.dart';
+import 'package:ai_assistent_app/widgets/selection/result_movies.dart';
 import 'package:get/get.dart';
 
 class Routes {
@@ -14,6 +16,7 @@ class Routes {
   static const chat = '/chat';
   static const genresSelection = '/genresSelection';
   static const moviesSelection = '/moviesSelection';
+  static const resultScreen = '/resultScreen';
 
   static List<GetPage<dynamic>> pages = [
     GetPage(
@@ -39,6 +42,10 @@ class Routes {
     GetPage(
       name: Routes.moviesSelection,
       page: () => const MoviesSelectionScreen(),
+    ),
+    GetPage(
+      name: Routes.resultScreen,
+      page: () => const ResultScreen(),
     ),
   ];
 }

@@ -15,8 +15,8 @@ class LoginScreen extends StatelessWidget {
             children: [
               TextButton(
                 onPressed: () {
-                  AppAPI.sendGenres2();
-                  AppAPI.getJang();
+                  // AppAPI.sendGenres2();
+                  // AppAPI.getJang();
                 },
                 child: const Text('api send'),
               ),

@@ -1,6 +1,7 @@
 import 'dart:convert';
 import 'dart:io';
 
+import 'package:ai_assistent_app/controllers/selection_controller.dart';
 import 'package:ai_assistent_app/logs/make_logs.dart';
 import 'package:dio/dio.dart';
 import 'package:get/get.dart';
@@ -12,12 +13,12 @@ var logger = Logger(
 );
 
 class AppAPI {
-  static String baseUrl1 = 'https://movie-recommendation.kro.kr/api';
-  static String baseUrl2 = 'https://localhost/api';
-  static String baseUrl3 = 'https://localhost:2020';
-  static String baseUrl4 = 'localhost:2020';
+  static String baseUrl = 'https://movie-recommendation.kro.kr/api';
 
-  static String baseUrl = 'https://~~~';
+  // static String baseUrl2 = 'https://localhost/api';
+  // static String baseUrl3 = 'https://localhost:2020';
+  // static String baseUrl4 = 'localhost:2020';
+  static String baseUrl1 = 'https://~~~';
 
   // static getHeader() {
   //   AccountController accountController = Get.find();
@@ -68,107 +69,61 @@ class AppAPI {
     return data;
   }
 
-  static sendGenres() async {
-    Dio dio = DioServices().to();
-    final res = await dio.post('/favoritegenres', data: {
-      'genre1': "sf",
-      'genre2': "romance",
-    });
-    var data = res.data;
-    print(data.toString());
-    return;
-  }
-
-  static sendGenres2() async {
-    // String url = "movie-recommendation.kro.kr:8080";
-    // final res = await http.get(
-    //   Uri.http(url, '/asdf'),
-    // );
-    // final data = json.decode(utf8.decode(res.bodyBytes));
-    // logger.i(data);
-    // return data;
-    print('$baseUrl/favoritegenres');
-    final res = await http.post(
-      Uri.parse('$baseUrl/favoritegenres'),
-      body: {
-        'genre1': "sf",
-        'genre2': "romance",
-      },
-    );
-    // final data = res.body;
-    final data = json.decode(utf8.decode(res.bodyBytes));
-    logger.i(data);
-    return data;
-  }
-
-  static getJang() async {
-    final res = await http.get(Uri.parse('$baseUrl/asdf'));
-    final data = res.body;
-    // final data = json.decode(utf8.decode(res.bodyBytes));
-    logger.i(data);
-    return data;
-  }
-
-  //
-  // {
-  //   genre1:"sf",
-  //   genre2: "romance",
+  // static sendGenres() async {
+  //   Dio dio = DioServices().to();
+  //   final res = await dio.post('/favoritegenres', data: {
+  //     'genre1': "sf",
+  //     'genre2': "romance",
+  //   });
+  //   var data = res.data;
+  //   print(data.toString());
+  //   return;
   // }
-  static sendGenres3(List<String> genres) async {
-    // print('$baseUrl/favoritegenres');
-    for (int i = 1; i < 3; i++) {
-      String url = i > 1 ? baseUrl2 : baseUrl1;
-      await Future.delayed(Duration(seconds: 2));
-      try {
-        saveLogToFile('sendgenres $url');
-        final res = await http.post(
-          Uri.parse('$url/favoritegenres'),
-          body: {
-            'genre1': genres[0],
-            'genre2': genres[1],
-            'genre3': genres[2],
-          },
-        );
-        // final data = res.body;
-        final data = json.decode(utf8.decode(res.bodyBytes));
-        logger.i(data);
-        saveLogToFile(data.toString());
-        Get.snackbar('send genres return value', data);
-        return data;
-      } catch (e) {
-        logger.e(e);
-        Get.snackbar('send genres return err', e.toString());
-        saveLogToFile(e.toString());
-      }
+
+  static sendGenres(List<String> genres) async {
+    try {
+      final res = await http.post(
+        Uri.parse('$baseUrl/favoritegenres'),
+        body: {
+          'genre1': genres[0],
+          'genre2': genres[1],
+          'genre3': genres[2],
+        },
+      );
+      // final data = res.body;
+      final data = json.decode(utf8.decode(res.bodyBytes));
+      logger.i(data);
+      // Get.snackbar('send genres return value', data);
+      return data;
+    } catch (e) {
+      logger.e(e);
+      Get.snackbar('send genres return err', e.toString());
+      saveLogToFile(e.toString());
     }
   }
 
   static sendMovies(List<String> movies) async {
-    // print('$baseUrl/favoritemovies');
-    for (int i = 1; i < 3; i++) {
-      String url = i > 1 ? baseUrl2 : baseUrl1;
-      await Future.delayed(Duration(seconds: 2));
-      try {
-        saveLogToFile('sendmovies $url');
-        final res = await http.post(
-          Uri.parse('$url/favoritemovies'),
-          body: {
-            'movie1': movies[0],
-            'movie2': movies[1],
-            'movie3': movies[2],
-          },
-        );
-        // final data = res.body;
-        final data = json.decode(utf8.decode(res.bodyBytes));
-        logger.i(data);
-        saveLogToFile(data.toString());
-        Get.snackbar('send movies return value', data);
-        return data;
-      } catch (e) {
-        logger.e(e);
-        Get.snackbar('send movies return err', e.toString());
-        saveLogToFile(e.toString());
-      }
+    SelectionController selectionController = Get.find();
+    try {
+      final res = await http.post(
+        Uri.parse('$baseUrl/favoritemovies'),
+        body: {
+          'movie1': movies[0],
+          'movie2': movies[1],
+          'movie3': movies[2],
+        },
+      );
+      // final data = res.body;
+      Map<String, String> data = json.decode(utf8.decode(res.bodyBytes));
+      logger.i(data);
+      selectionController.getResultMoviesPosterPath(data.values.toList());
+      // Get.snackbar('send movies return value', data);
+      return data;
+    } catch (e) {
+      logger.e(e);
+      Get.snackbar('send movies return err', e.toString());
+      selectionController.getResultMoviesPosterPath(['파묘', '비긴 어게인', '어바웃 타임']);
+      saveLogToFile(e.toString());
     }
   }
 }
