@@ -1,5 +1,7 @@
 import 'dart:convert';
+import 'dart:io';
 
+import 'package:ai_assistent_app/logs/make_logs.dart';
 import 'package:dio/dio.dart';
 import 'package:get/get.dart';
 import 'package:logger/logger.dart';
@@ -10,8 +12,10 @@ var logger = Logger(
 );
 
 class AppAPI {
-  static String baseUrl = 'localhost:2020';
-  // static String baseUrl = 'https://movie-recommendation.kro.kr';
+  static String baseUrl1 = 'https://localhost:2020';
+  static String baseUrl2 = 'http://localhost:2020';
+  static String baseUrl3 = 'localhost:2020';
+  static String baseUrl = 'https://movie-recommendation.kro.kr';
   // static String baseUrl = 'https://~~~';
 
   // static getHeader() {
@@ -110,44 +114,57 @@ class AppAPI {
   //   genre2: "romance",
   // }
   static sendGenres3(List<String> genres) async {
-    // String url = "movie-recommendation.kro.kr:8080";
-    // final res = await http.get(
-    //   Uri.http(url, '/asdf'),
-    // );
-    // final data = json.decode(utf8.decode(res.bodyBytes));
-    // logger.i(data);
-    // return data;
-    print('$baseUrl/favoritegenres');
-    final res = await http.post(
-      Uri.parse('$baseUrl/favoritegenres'),
-      body: {
-        'genre1': genres[0],
-        'genre2': genres[1],
-        'genre3': genres[2],
-      },
-    );
-    // final data = res.body;
-    final data = json.decode(utf8.decode(res.bodyBytes));
-    logger.i(data);
-    Get.snackbar('send genres return value', data);
-    return data;
+    // print('$baseUrl/favoritegenres');
+    for (int i = 1; i < 4; i++) {
+      sleep(const Duration(seconds: 2));
+      try {
+        saveLogToFile('sendgenres $baseUrl$i');
+        final res = await http.post(
+          Uri.parse('$baseUrl$i/favoritegenres'),
+          body: {
+            'genre1': genres[0],
+            'genre2': genres[1],
+            'genre3': genres[2],
+          },
+        );
+        // final data = res.body;
+        final data = json.decode(utf8.decode(res.bodyBytes));
+        logger.i(data);
+        saveLogToFile(data.toString());
+        Get.snackbar('send genres return value', data);
+        return data;
+      } catch (e) {
+        Get.snackbar('send genres return err', e.toString());
+        saveLogToFile(e.toString());
+      }
+    }
   }
 
   static sendMovies(List<String> movies) async {
-    print('$baseUrl/favoritemovies');
-    final res = await http.post(
-      Uri.parse('$baseUrl/favoritemovies'),
-      body: {
-        'movie1': movies[0],
-        'movie2': movies[1],
-        'movie3': movies[2],
-      },
-    );
-    // final data = res.body;
-    final data = json.decode(utf8.decode(res.bodyBytes));
-    logger.i(data);
-    Get.snackbar('send movies return value', data);
-    return data;
+    // print('$baseUrl/favoritemovies');
+    for (int i = 1; i < 4; i++) {
+      sleep(const Duration(seconds: 2));
+      try {
+        saveLogToFile('sendmovies $baseUrl$i');
+        final res = await http.post(
+          Uri.parse('$baseUrl$i/favoritemovies'),
+          body: {
+            'movie1': movies[0],
+            'movie2': movies[1],
+            'movie3': movies[2],
+          },
+        );
+        // final data = res.body;
+        final data = json.decode(utf8.decode(res.bodyBytes));
+        logger.i(data);
+        saveLogToFile(data.toString());
+        Get.snackbar('send movies return value', data);
+        return data;
+      } catch (e) {
+        Get.snackbar('send movies return err', e.toString());
+        saveLogToFile(e.toString());
+      }
+    }
   }
 }
 
