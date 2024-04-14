@@ -12,11 +12,12 @@ var logger = Logger(
 );
 
 class AppAPI {
-  static String baseUrl1 = 'https://localhost:2020';
-  static String baseUrl2 = 'http://localhost:2020';
-  static String baseUrl3 = 'localhost:2020';
-  static String baseUrl = 'https://movie-recommendation.kro.kr';
-  // static String baseUrl = 'https://~~~';
+  static String baseUrl1 = 'https://movie-recommendation.kro.kr/api';
+  static String baseUrl2 = 'https://localhost/api';
+  static String baseUrl3 = 'https://localhost:2020';
+  static String baseUrl4 = 'localhost:2020';
+
+  static String baseUrl = 'https://~~~';
 
   // static getHeader() {
   //   AccountController accountController = Get.find();
@@ -115,12 +116,13 @@ class AppAPI {
   // }
   static sendGenres3(List<String> genres) async {
     // print('$baseUrl/favoritegenres');
-    for (int i = 1; i < 4; i++) {
-      sleep(const Duration(seconds: 2));
+    for (int i = 1; i < 3; i++) {
+      String url = i > 1 ? baseUrl2 : baseUrl1;
+      await Future.delayed(Duration(seconds: 2));
       try {
-        saveLogToFile('sendgenres $baseUrl$i');
+        saveLogToFile('sendgenres $url');
         final res = await http.post(
-          Uri.parse('$baseUrl$i/favoritegenres'),
+          Uri.parse('$url/favoritegenres'),
           body: {
             'genre1': genres[0],
             'genre2': genres[1],
@@ -134,6 +136,7 @@ class AppAPI {
         Get.snackbar('send genres return value', data);
         return data;
       } catch (e) {
+        logger.e(e);
         Get.snackbar('send genres return err', e.toString());
         saveLogToFile(e.toString());
       }
@@ -142,12 +145,13 @@ class AppAPI {
 
   static sendMovies(List<String> movies) async {
     // print('$baseUrl/favoritemovies');
-    for (int i = 1; i < 4; i++) {
-      sleep(const Duration(seconds: 2));
+    for (int i = 1; i < 3; i++) {
+      String url = i > 1 ? baseUrl2 : baseUrl1;
+      await Future.delayed(Duration(seconds: 2));
       try {
-        saveLogToFile('sendmovies $baseUrl$i');
+        saveLogToFile('sendmovies $url');
         final res = await http.post(
-          Uri.parse('$baseUrl$i/favoritemovies'),
+          Uri.parse('$url/favoritemovies'),
           body: {
             'movie1': movies[0],
             'movie2': movies[1],
@@ -161,6 +165,7 @@ class AppAPI {
         Get.snackbar('send movies return value', data);
         return data;
       } catch (e) {
+        logger.e(e);
         Get.snackbar('send movies return err', e.toString());
         saveLogToFile(e.toString());
       }
