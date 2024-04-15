@@ -22,4 +22,10 @@ class SelectionController extends GetxController {
     }
     print(resultMoviesPath.toString());
   }
+
+  void clearSelectedValues() {
+    selectedGenres.clear();
+    selectedMovies.clear();
+    resultMoviesPath.clear();
+  }
 }
