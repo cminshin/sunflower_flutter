@@ -42,15 +42,18 @@ class AppAPI {
 
   static login(id, password) async {
     Dio dio = DioServices().to();
-    final res = await dio.post('/api/v1/login', data: {
+    final res = await dio.post('/api/login', data: {
       'id': id,
       'password': password,
     });
     var data = res.data;
-    return {
-      'success': data['access_token'] != null,
-      'accessToken': data['access_token'] ?? '',
-    };
+    logger.i(data);
+    Get.snackbar('login status', data.toString());
+    return data;
+    // return {
+    //   'success': data['access_token'] != null,
+    //   'accessToken': data['access_token'] ?? '',
+    // };
   }
 
   static logout() async {

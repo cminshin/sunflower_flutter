@@ -1,3 +1,4 @@
+import 'package:ai_assistent_app/configs/api.dart';
 import 'package:ai_assistent_app/configs/colors.dart';
 import 'package:ai_assistent_app/configs/routes.dart';
 import 'package:ai_assistent_app/widgets/my_background.dart';
@@ -16,6 +17,7 @@ class MainScreen extends StatelessWidget {
       body: Stack(
         children: [
           myBackground(),
+          Container(),
           Positioned.fill(
             top: MediaQuery.of(context).size.height * 0.2,
             child: Center(
@@ -33,17 +35,8 @@ class MainScreen extends StatelessWidget {
                   const SizedBox(height: 30),
                   myElevatedButton(() {
                     Get.toNamed(Routes.genresSelection);
+                    AppAPI.login('rudah7815', "sodlfmadms0078@");
                   }, 'Start Now', AppColor.mainColor),
-                  // ElevatedButton(
-                  //   style: ElevatedButton.styleFrom(
-                  //     backgroundColor: AppColor.mainColor,
-                  //   ),
-                  //   onPressed: () {
-                  //     Get.toNamed(Routes.selection);
-                  //   },
-                  //   child: Text('Start Now',
-                  //       style: TextStyle(color: AppColor.whiteColor)),
-                  // ),
                 ],
               ),
             ),
