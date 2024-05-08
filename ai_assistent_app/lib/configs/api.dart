@@ -139,7 +139,7 @@ class AppAPI {
         'userName': id,
         'password': password,
       });
-      var data = res.bodyBytes;
+      final data = json.decode(utf8.decode(res.bodyBytes));
       logger.i(data);
       Get.snackbar('login status', data.toString());
       return data;
