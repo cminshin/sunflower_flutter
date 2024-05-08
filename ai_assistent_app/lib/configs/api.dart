@@ -1,5 +1,6 @@
 import 'dart:convert';
 import 'dart:io';
+import 'dart:math';
 
 import 'package:ai_assistent_app/controllers/selection_controller.dart';
 import 'package:ai_assistent_app/logs/make_logs.dart';
@@ -40,22 +41,22 @@ class AppAPI {
     return data['token'];
   }
 
-  static login(id, password) async {
-    Get.snackbar('login start', 'login start');
-    Dio dio = DioServices().to();
-    final res = await dio.post('/api/login', data: {
-      'userName': id,
-      'password': password,
-    });
-    var data = res.data;
-    logger.i(data);
-    Get.snackbar('login status', data.toString());
-    return data;
-    // return {
-    //   'success': data['access_token'] != null,
-    //   'accessToken': data['access_token'] ?? '',
-    // };
-  }
+  // static login(id, password) async {
+  //   Get.snackbar('login start', 'login start');
+  //   Dio dio = DioServices().to();
+  //   final res = await dio.post('/api/login', data: {
+  //     'userName': id,
+  //     'password': password,
+  //   });
+  //   var data = res.data;
+  //   logger.i(data);
+  //   Get.snackbar('login status', data.toString());
+  //   return data;
+  //   // return {
+  //   //   'success': data['access_token'] != null,
+  //   //   'accessToken': data['access_token'] ?? '',
+  //   // };
+  // }
 
   static logout() async {
     Dio dio = DioServices().to();
@@ -129,6 +130,26 @@ class AppAPI {
       selectionController.getResultMoviesPosterPath(['파묘', '비긴 어게인', '어바웃 타임']);
       saveLogToFile(e.toString());
     }
+  }
+
+  static login(id, password) async {
+    Get.snackbar('login start', 'login start');
+    try {
+      final res = await http.post(Uri.parse('$baseUrl/login'), body: {
+        'userName': id,
+        'password': password,
+      });
+      var data = res.bodyBytes;
+      logger.i(data);
+      Get.snackbar('login status', data.toString());
+      return data;
+    } catch (e) {
+      Get.snackbar('login error', e.toString());
+    }
+    // return {
+    //   'success': data['access_token'] != null,
+    //   'accessToken': data['access_token'] ?? '',
+    // };
   }
 }
 
