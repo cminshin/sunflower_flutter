@@ -41,9 +41,10 @@ class AppAPI {
   }
 
   static login(id, password) async {
+    Get.snackbar('login start', 'login start');
     Dio dio = DioServices().to();
     final res = await dio.post('/api/login', data: {
-      'id': id,
+      'userName': id,
       'password': password,
     });
     var data = res.data;
