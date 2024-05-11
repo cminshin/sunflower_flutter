@@ -15,7 +15,7 @@ class MyDataController extends GetxController {
   }
 
   Future<void> initRequeest() async {
-    final res = await AppAPI.getUserInfo();
+    // final res = await AppAPI.getUserInfo();
 
     try {} catch (e) {}
   }

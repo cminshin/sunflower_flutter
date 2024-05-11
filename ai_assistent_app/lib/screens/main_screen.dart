@@ -1,11 +1,11 @@
-import 'package:ai_assistent_app/configs/api.dart';
 import 'package:ai_assistent_app/configs/colors.dart';
 import 'package:ai_assistent_app/configs/routes.dart';
+import 'package:ai_assistent_app/controllers/account_controller.dart';
 import 'package:ai_assistent_app/widgets/my_background.dart';
 import 'package:ai_assistent_app/widgets/my_elevated_button.dart';
 import 'package:ai_assistent_app/widgets/transformed_poster.dart';
+import 'package:ai_assistent_app/widgets/user_default_icon.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
 import 'package:get/get.dart';
 
 class MainScreen extends StatelessWidget {
@@ -13,6 +13,7 @@ class MainScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    AccountController accountController = Get.find();
     return Scaffold(
       body: Stack(
         children: [
@@ -33,10 +34,13 @@ class MainScreen extends StatelessWidget {
                     ),
                   ),
                   const SizedBox(height: 30),
-                  myElevatedButton(() {
-                    Get.toNamed(Routes.genresSelection);
-                    AppAPI.login('rudah7815', "sodlfmadms0078@");
-                  }, 'Start Now', AppColor.mainColor),
+                  Obx(() => accountController.isLoggedIn.value == true
+                      ? myElevatedButton(() {
+                          Get.toNamed(Routes.genresSelection);
+                        }, '시작하기', AppColor.mainColor)
+                      : myElevatedButton(() {
+                          Get.toNamed(Routes.login);
+                        }, '로그인', AppColor.mainColor))
                 ],
               ),
             ),
@@ -67,6 +71,38 @@ class MainScreen extends StatelessWidget {
               ],
             ),
           ),
+          Positioned(
+              top: 10,
+              right: 180,
+              width: 100,
+              height: 30,
+              child: Obx(() => accountController.isLoggedIn.value == true
+                  ? UserIcon()
+                  : myElevatedButton(
+                      () {
+                        Get.toNamed(Routes.login);
+                      },
+                      "로그인",
+                      AppColor.mainColor,
+                    ))),
+          // 여기 해결 필요
+          Positioned(
+              top: 10,
+              right: 50,
+              width: 100,
+              height: 30,
+              child: Obx(() => accountController.isLoggedIn.value == true
+                  ? Container()
+                  : ElevatedButton(
+                      style: ElevatedButton.styleFrom(
+                        backgroundColor: Colors.white,
+                        side: BorderSide(color: AppColor.mainLightColor, width: 2),
+                      ),
+                      onPressed: () {
+                        Get.toNamed(Routes.join);
+                      },
+                      child: Text("회원가입", style: TextStyle(color: AppColor.mainColor)),
+                    )))
         ],
       ),
     );

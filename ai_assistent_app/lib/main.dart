@@ -5,7 +5,6 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:get_storage/get_storage.dart';
 
-
 Future<void> main() async {
   await GetStorage.init();
   WidgetsFlutterBinding.ensureInitialized();
@@ -21,7 +20,7 @@ class App extends StatelessWidget {
     return GetMaterialApp(
       debugShowCheckedModeBanner: false,
       getPages: Routes.pages,
-      initialRoute: Routes.main,
+      initialRoute: Routes.init,
       initialBinding: InitBinding(),
       builder: (BuildContext context, Widget? child) {
         final MediaQueryData data = MediaQuery.of(context);
