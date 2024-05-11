@@ -39,13 +39,15 @@ class AppAPI {
 
   static sendGenres(List<String> genres) async {
     try {
-      final res = await http.post(Uri.parse('$baseUrl/favoritegenres'),
-          body: {
-            'genre1': genres[0],
-            'genre2': genres[1],
-            'genre3': genres[2],
-          },
-          headers: getHeader());
+      final res = await http.post(
+        Uri.parse('$baseUrl/favoritegenres'),
+        body: {
+          'genre1': genres[0],
+          'genre2': genres[1],
+          'genre3': genres[2],
+        },
+        // headers: getHeader()
+      );
       // final data = res.body;
       final data = json.decode(utf8.decode(res.bodyBytes));
       logger.i(data);
@@ -61,13 +63,15 @@ class AppAPI {
   static sendMovies(List<String> movies) async {
     SelectionController selectionController = Get.find();
     try {
-      final res = await http.post(Uri.parse('$baseUrl/favoritemovies'),
-          body: {
-            'movie1': movies[0],
-            'movie2': movies[1],
-            'movie3': movies[2],
-          },
-          headers: getHeader());
+      final res = await http.post(
+        Uri.parse('$baseUrl/favoritemovies'),
+        body: {
+          'movie1': movies[0],
+          'movie2': movies[1],
+          'movie3': movies[2],
+        },
+        // headers: getHeader()
+      );
       // final data = res.body;
       Map<String, String> data = json.decode(utf8.decode(res.bodyBytes));
       logger.i(data);
@@ -116,10 +120,11 @@ class AppAPI {
 
   static join(username, id, password) async {
     Get.snackbar('join start', 'join start');
+    logger.i('$username, $id, $password');
     try {
       final res = await http.post(Uri.parse('$baseUrl/join'), body: {
         'username': username,
-        'id': id,
+        'userId': id,
         'password': password,
       });
       final data = json.decode(utf8.decode(res.bodyBytes));
