@@ -1,3 +1,4 @@
+import 'package:ai_assistent_app/configs/api.dart';
 import 'package:ai_assistent_app/configs/colors.dart';
 import 'package:ai_assistent_app/configs/routes.dart';
 import 'package:ai_assistent_app/controllers/account_controller.dart';

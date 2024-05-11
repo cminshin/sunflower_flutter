@@ -21,7 +21,7 @@ class AppAPI {
       logout();
     } else {
       return {
-        'Authorization': 'Bearer : $token',
+        'Authorization': 'Bearer $token',
       };
     }
   }
@@ -39,16 +39,15 @@ class AppAPI {
 
   static sendGenres(List<String> genres) async {
     try {
-      final res = await http.post(
-        Uri.parse('$baseUrl/favoritegenres'),
-        body: {
-          'genre1': genres[0],
-          'genre2': genres[1],
-          'genre3': genres[2],
-        },
-        // headers: getHeader()
-      );
+      final res = await http.post(Uri.parse('$baseUrl/favoritegenres'),
+          body: {
+            'genre1': genres[0],
+            'genre2': genres[1],
+            'genre3': genres[2],
+          },
+          headers: getHeader());
       // final data = res.body;
+      logger.i(utf8.decode(res.bodyBytes));
       final data = json.decode(utf8.decode(res.bodyBytes));
       logger.i(data);
       // Get.snackbar('send genres return value', data);
@@ -63,15 +62,13 @@ class AppAPI {
   static sendMovies(List<String> movies) async {
     SelectionController selectionController = Get.find();
     try {
-      final res = await http.post(
-        Uri.parse('$baseUrl/favoritemovies'),
-        body: {
-          'movie1': movies[0],
-          'movie2': movies[1],
-          'movie3': movies[2],
-        },
-        // headers: getHeader()
-      );
+      final res = await http.post(Uri.parse('$baseUrl/favoritemovies'),
+          body: {
+            'movie1': movies[0],
+            'movie2': movies[1],
+            'movie3': movies[2],
+          },
+          headers: getHeader());
       // final data = res.body;
       Map<String, String> data = json.decode(utf8.decode(res.bodyBytes));
       logger.i(data);
@@ -87,12 +84,20 @@ class AppAPI {
   }
 
   static login(id, password) async {
+    // asdf();
+
     Get.snackbar('login start', 'login start');
     try {
-      final res = await http.post(Uri.parse('$baseUrl/login'), body: {
-        'id': id,
-        'password': password,
-      });
+      final res = await http.post(
+        Uri.parse('$baseUrl/login'),
+        body: {
+          'id': id,
+          'password': password,
+        },
+        headers: {
+          'Authorization': "authorization",
+        },
+      );
       final data = json.decode(utf8.decode(res.bodyBytes));
       logger.i(data);
       Get.snackbar('login status', data.toString());
@@ -121,22 +126,43 @@ class AppAPI {
   static join(username, id, password) async {
     Get.snackbar('join start', 'join start');
     logger.i('$username, $id, $password');
+    var res;
     try {
-      final res = await http.post(Uri.parse('$baseUrl/join'), body: {
+      res = await http.post(Uri.parse('$baseUrl/join'), body: {
         'username': username,
         'userId': id,
         'password': password,
       });
       final data = json.decode(utf8.decode(res.bodyBytes));
       logger.i(data);
+      logger.e(utf8.decode(res.bodyBytes));
       Get.snackbar('join status', data.toString());
       return data;
     } catch (e) {
+      logger.e(e.toString());
+      logger.e(utf8.decode(res.bodyBytes));
       Get.snackbar('join error', e.toString());
     }
     // return {
     //   'success': data['access_token'] != null,
     //   'accessToken': data['access_token'] ?? '',
     // };
+  }
+
+  static asdf() async {
+    final res = await http.get(Uri.parse('$baseUrl/asdf'));
+    final data = json.decode(utf8.decode(res.bodyBytes));
+    logger.i(data);
+  }
+
+  static getUserInfo() async {
+    try {
+      final res = await http.get(Uri.parse('$baseUrl/userinfo'), headers: getHeader());
+      final data = json.decode(utf8.decode(res.bodyBytes));
+      logger.i(data);
+      return data;
+    } catch (e) {
+      logger.e(e.toString());
+    }
   }
 }

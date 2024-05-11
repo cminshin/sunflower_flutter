@@ -63,14 +63,16 @@ class AccountController extends GetxController {
       } else {
         final data = await AppAPI.login(iDController.text, passwordController.text);
         logger.i(data);
-        if (data['success']) {
+        if (data['status'] == 200) {
           isLoggedIn.value = true;
+          accessToken.value = data['accessToken'];
+          logger.i(accessToken.value);
           Get.offAllNamed(Routes.main);
         } else {
           Get.back();
-          if (data['error'] == 'ID_ERROR') {
+          if (data['message'] == 'ID_ERROR') {
             error.value = '등록된 아이디가 아닙니다.';
-          } else if (data['error'] == 'PASSWORD_ERROR') {
+          } else if (data['message'] == 'PASSWORD_ERROR') {
             error.value = '비밀번호가 틀렸습니다';
           } else {
             error.value = '아이디 혹은 비밀번호가 틀렸습니다';
@@ -117,11 +119,20 @@ class AccountController extends GetxController {
         final data =
             await AppAPI.join(usernameController.text, iDController.text, passwordController.text);
         logger.i(data);
-        Get.snackbar('join status', data.toString());
-        if (data['success']) {
-          isLoggedIn.value = true;
-          Get.offAllNamed(Routes.main);
+        // Get.snackbar('join status', data.toString());
+        if (data['status'] == 200) {
+          // final logindata = await AppAPI.login(iDController.text, passwordController.text);
+          // if (logindata['status'] == 200) {
+          //   isLoggedIn.value = true;
+          //   accessToken.value = data['accessToken'];
+          //   logger.i(accessToken.value);
+          //   Get.offAllNamed(Routes.main);
+          // }
         } else {
+          if (data['message'] == 'ID_ERROR') {
+            logger.e(data['message']);
+            Get.snackbar('ID 중복', data.toString());
+          }
           Get.back();
           Get.snackbar('join error', data.toString());
         }
