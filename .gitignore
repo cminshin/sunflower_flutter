@@ -48,4 +48,4 @@ app.*.map.json
 /assets/images/movies/
 
 # Exclude lib/config/api file
-/lib/config/api.dart
+/lib/configs/api.dart
