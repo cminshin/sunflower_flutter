@@ -35,7 +35,8 @@ class AccountController extends GetxController {
       String? localAccessToken = box.read('localAccessToken');
 
       if (localAccessToken == null || localAccessToken == '') {
-        logout();
+        // logout();
+        Get.offNamed(Routes.main);
       } else {
         bool isValidate = await AppAPI.checkAccessToken(localAccessToken);
         if (isValidate) {
