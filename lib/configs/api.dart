@@ -1,5 +1,6 @@
 import 'dart:convert';
 
+import 'package:movie_recommendation_front/configs/routes.dart';
 import 'package:movie_recommendation_front/controllers/account_controller.dart';
 import 'package:movie_recommendation_front/controllers/selection_controller.dart';
 import 'package:movie_recommendation_front/logs/make_logs.dart';
@@ -95,6 +96,8 @@ class AppAPI {
   }
 
   static login(id, password) async {
+    Get.toNamed(Routes.main);
+    return;
     try {
       final res = await http.post(
         Uri.parse('$baseUrl/login'),
