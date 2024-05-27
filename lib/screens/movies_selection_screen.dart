@@ -23,6 +23,7 @@ class MoviesSelectionScreen extends StatelessWidget {
             icon: const Icon(Icons.arrow_back),
             onPressed: () {
               Get.back();
+              selectionController.clearSelectedValues();
             },
           ),
         ),
@@ -45,12 +46,11 @@ class MoviesSelectionScreen extends StatelessWidget {
                       ),
                       const MoviesSelection(),
                       const SizedBox(height: 60),
-                      myElevatedButton(() {
+                      myElevatedButton(() async {
                         if (selectionController.selectedMovies.length == 3) {
-                          AppAPI.sendMovies(selectionController.selectedMovies);
-                          print('movie send');
                           Get.dialog(const LoadingWidget());
-                          Future.delayed(const Duration(seconds: 3), () {
+                          await selectionController.getResultMoviesPosterPath();
+                          Future.delayed(const Duration(seconds: 1), () {
                             Get.toNamed(Routes.resultScreen);
                           });
                         } else {

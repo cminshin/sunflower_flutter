@@ -23,7 +23,7 @@ class ResultScreen extends StatelessWidget {
         leading: IconButton(
           icon: const Icon(Icons.arrow_back),
           onPressed: () {
-            Get.back();
+            Get.toNamed(Routes.moviesSelection);
           },
         ),
       ),
@@ -36,7 +36,7 @@ class ResultScreen extends StatelessWidget {
               child: Column(
                 children: [
                   const Text(
-                    'Result',
+                    '결과',
                     style: TextStyle(
                       fontSize: 24,
                       fontWeight: FontWeight.bold,

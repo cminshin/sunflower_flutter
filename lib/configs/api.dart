@@ -82,22 +82,24 @@ class AppAPI {
           },
           headers: getHeader());
       // final data = res.body;
+      // logger.e(utf8.decode(res.bodyBytes));
       Map<String, dynamic> data = json.decode(utf8.decode(res.bodyBytes));
       logger.i(data);
+
       // selectionController.getResultMoviesPosterPath(data.values.toList());
-      // Get.snackbar('send movies return value', data);
+      Get.snackbar('send movies return value', data.toString());
       return data;
     } catch (e) {
       logger.e(e);
       Get.snackbar('send movies return err', e.toString());
-      selectionController.getResultMoviesPosterPath(['파묘', '비긴 어게인', '어바웃 타임']);
+      // selectionController.getResultMoviesPosterPath(['가필드', '겨울왕국', '어바웃 타임']);
       saveLogToFile(e.toString());
     }
   }
 
   static login(id, password) async {
-    Get.toNamed(Routes.main);
-    return;
+    // Get.toNamed(Routes.main);
+    // return;
     try {
       final res = await http.post(
         Uri.parse('$baseUrl/login'),

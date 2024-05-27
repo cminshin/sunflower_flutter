@@ -22,6 +22,7 @@ class GenresSelectionScreen extends StatelessWidget {
             icon: const Icon(Icons.arrow_back),
             onPressed: () {
               Get.back();
+              selectionController.clearSelectedGenres();
             },
           ),
         ),
@@ -45,9 +46,10 @@ class GenresSelectionScreen extends StatelessWidget {
                       const GenresSelection(),
                       const SizedBox(height: 60),
                       myElevatedButton(() {
+                        print(selectionController.selectedGenres);
                         if (selectionController.selectedGenres.length == 3) {
-                          AppAPI.sendGenres(selectionController.selectedGenres);
-                          print('genre send');
+                          // AppAPI.sendGenres(selectionController.selectedGenres);
+                          // print('genre send');
                           selectionController.getExampleMoviesPath();
                           Get.toNamed(Routes.moviesSelection);
                         } else {

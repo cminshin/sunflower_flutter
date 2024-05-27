@@ -15,16 +15,15 @@ class PosterTemplate extends StatelessWidget {
     String title = moviePosterPath.split('/')[1].split('.')[0];
     return SizedBox(
       width: posterWidth < 230 ? posterWidth : 230,
-      height: posterWidth * 1.8,
+      height: posterWidth * 1.9,
       child: Column(
         mainAxisAlignment: MainAxisAlignment.spaceAround,
         children: [
           SizedBox(
-            child: Image.asset(
-              'assets/images/movies/posters/$moviePosterPath',
-              fit: BoxFit.cover,
-            ),
-          ),
+              child: Image.asset(
+            'assets/images/movies/posters/$moviePosterPath',
+            fit: BoxFit.cover,
+          )),
           // SizedBox(height: posterWidth * 0.1),
           Obx(() => myChangingButton(() {
                 if (selectionController.selectedMovies.contains(title)) {

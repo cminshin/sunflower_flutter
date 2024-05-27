@@ -1,3 +1,6 @@
+import 'dart:math';
+
+import 'package:movie_recommendation_front/configs/api.dart';
 import 'package:movie_recommendation_front/configs/movies.dart';
 import 'package:get/get.dart';
 
@@ -8,21 +11,31 @@ class SelectionController extends GetxController {
   RxList<String> selectedMovies = <String>[].obs;
 
   List<String> exampleMoviesPath = [];
-  List<String> resultMoviesPath = [];
+  List<List<String>> resultMoviesPath = [];
+  // Iterable resultMoviesPath = [
+  //   ["극한직업", "https://image.tmdb.org/t/p/original/jbHNkNydiZstlqhhBSvG19lm4NL.jpg"],
+  //   ["극한직업", "https://image.tmdb.org/t/p/original/jbHNkNydiZstlqhhBSvG19lm4NL.jpg"],
+  //   ["극한직업", "https://image.tmdb.org/t/p/original/jbHNkNydiZstlqhhBSvG19lm4NL.jpg"],
+  //   ["극한직업", "https://image.tmdb.org/t/p/original/jbHNkNydiZstlqhhBSvG19lm4NL.jpg"],
+  //   ["극한직업", "https://image.tmdb.org/t/p/original/jbHNkNydiZstlqhhBSvG19lm4NL.jpg"],
+  //   ["극한직업", "https://image.tmdb.org/t/p/original/jbHNkNydiZstlqhhBSvG19lm4NL.jpg"],
+  //   ["극한직업", "https://image.tmdb.org/t/p/original/jbHNkNydiZstlqhhBSvG19lm4NL.jpg"],
+  //   ["극한직업", "https://image.tmdb.org/t/p/original/jbHNkNydiZstlqhhBSvG19lm4NL.jpg"],
+  //   ["극한직업", "https://image.tmdb.org/t/p/original/jbHNkNydiZstlqhhBSvG19lm4NL.jpg"],
+  //   ["극한직업", "https://image.tmdb.org/t/p/original/jbHNkNydiZstlqhhBSvG19lm4NL.jpg"],
+  //   ["극한직업", "https://image.tmdb.org/t/p/original/jbHNkNydiZstlqhhBSvG19lm4NL.jpg"],
+  // ];
   Rx<bool> genreSend = false.obs;
 
-  void getResultMoviesPosterPath(List<String> movies) {
-    for (String movieName in movies) {
-      for (String moviePath in AppMovies.movies[0]) {
-        // 영화 이름이 포함된 경로를 찾으면 해당 경로를 resultMoviesPath에 추가
-        if (moviePath.contains(movieName)) {
-          resultMoviesPath.add(moviePath);
-          print('find $movieName');
-          break; // 일치하는 포스터를 찾았으므로 다음 선택된 영화로 이동
-        }
+  Future<void> getResultMoviesPosterPath() async {
+    Map<String, dynamic> data = await AppAPI.sendMovies(selectedMovies);
+    resultMoviesPath.clear();
+    data.forEach((key, value) {
+      if (value[1] != "No poster available") {
+        resultMoviesPath.add([value[0], value[1]]);
       }
-    }
-    print(resultMoviesPath.toString());
+    });
+    return;
   }
 
   void getExampleMoviesPath() {
@@ -37,11 +50,28 @@ class SelectionController extends GetxController {
         }
       }
     }
+    shuffleMovies(exampleMoviesPath);
+  }
+
+  void shuffleMovies(List<String> moviesPath) {
+    final random = Random();
+    for (int i = 0; i < moviesPath.length - 1; i++) {
+      int j = random.nextInt(i + 1);
+      String temp = moviesPath[i];
+      moviesPath[i] = moviesPath[j];
+      moviesPath[j] = temp;
+    }
+  }
+
+  void clearSelectedGenres() {
+    selectedGenres.clear();
+    exampleMoviesPath.clear();
   }
 
   void clearSelectedValues() {
     selectedGenres.clear();
     selectedMovies.clear();
+    exampleMoviesPath.clear();
     resultMoviesPath.clear();
   }
 }
